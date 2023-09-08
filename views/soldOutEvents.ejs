@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sold Out Events</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+
+<body>
+    <h1>Sold Out Events</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Event Name</th>
+        <th>Start Date Time</th>
+        <th>Duration in minutes</th>
+        <th>Event Description</th>
+        <th>Capacity</th>
+        <th>Tickets Available</th>
+        <th>Ongoing</th>
+        <th>Category ID</th>
+        <th>Action</th>
+      </tr>
+      <% for (let i = 0; i < events.length; i++) { %>
+        <tr>
+          <td><%= events[i].id %></td>
+          <td><%= events[i].eventName %></td>
+          <td><%= events[i].startDateTime %></td>
+          <td><%= events[i].duration %></td>
+          <td><%= events[i].eventDescription %></td>
+          <td><%= events[i].capacity %></td>
+          <td><%= events[i].ticketsAvailable %></td>
+          <td><%= events[i].isActive %></td>
+          <td><%= events[i].categoryId %></td>
+          <td>
+            <div class="container m-3">
+              <a type="button" class="btn btn-primary" href='/'>View</a> <!-- remember to link it to student 1 event -->
+              </div>
+          </td>
+        </tr>
+      <% } %>
+    </table>
+    
+    <div class="container m-3">
+      <a type="button" class="btn btn-primary" href='/'>Back</a>
+    </div>
+</body>
+</html>

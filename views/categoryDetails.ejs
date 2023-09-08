@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>Category Detail</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Category Detail</h1>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>Category ID:</strong> <%= event.id %>
+            </li>
+            <li class="list-group-item">
+                <strong>Event Name:</strong> <%= event.name %>
+            </li>
+            <li class="list-group-item">
+                <strong>Description:</strong> <%= event.description %>
+            </li>
+            <li class="list-group-item">
+                <strong>Start Date:</strong> <%= event.creationDate %>
+            </li>
+        </ul>
+
+      
+        <a href="/" class="btn btn-secondary mt-3">Back</a>
+    </div>
+</body>
+</html>

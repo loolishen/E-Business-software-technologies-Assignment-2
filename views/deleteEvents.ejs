@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Event Details</h1>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <strong>ID:</strong> <%= event.id %>
+            </li>
+            <li class="list-group-item">
+                <strong>Event Name:</strong> <%= event.eventName %>
+            </li>
+            <li class="list-group-item">
+                <strong>Start Date Time:</strong> <%= event.startDateTime %>
+            </li>
+            <li class="list-group-item">
+                <strong>Duration (minutes):</strong> <%= event.duration %>
+            </li>
+            <li class="list-group-item">
+                <strong>Event Description:</strong> <%= event.eventDescription %>
+            </li>
+            <li class="list-group-item">
+                <strong>Capacity:</strong> <%= event.capacity %>
+            </li>
+            <li class="list-group-item">
+                <strong>Tickets Available:</strong> <%= event.ticketsAvailable %>
+            </li>
+            <li class="list-group-item">
+                <strong>Ongoing:</strong> <%= event.isActive %>
+            </li>
+            <li class="list-group-item">
+                <strong>Category ID:</strong> <%= event.categoryId %>
+            </li>
+        </ul>
+        <form action="/ls/event/remove" method="GET">
+            <input type="hidden" name="id" value="<%= event.id %>">
+            <button type="submit" class="btn btn-danger mt-3">Delete Event</button>
+        </form>
+        <a href="/ls/eventOngoing" class="btn btn-secondary mt-3">Back</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Add New Event</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">New Event</h1>
+        <form action="/ls/event/add" method="post">
+            <div class="form-group">
+                <label for="eventName">Event Name:</label>
+                <input type="text" class="form-control" id="eventName" name="eventName" required>
+            </div>
+            <div class="form-group">
+                <label for="startDateTime">Start Date and Time:</label>
+                <input type="datetime-local" class="form-control" id="startDateTime" name="startDateTime" required>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (minutes):</label>
+                <input type="number" class="form-control" id="duration" name="duration" required>
+            </div>
+            <div class="form-group">
+                <label for="categoryId">Category ID:</label>
+                <input type="text" class="form-control" id="categoryId" name="categoryId" required>
+            </div>
+            <div class="form-group">
+                <label for="eventDescription">Description:</label>
+                <textarea class="form-control" id="eventDescription" name="eventDescription"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="eventImage">Image URL (940x470):</label>
+                <input type="text" class="form-control" id="eventImage" name="eventImage">
+            </div>
+            <div class="form-group">
+                <label for="capacity">Capacity:</label>
+                <input type="number" class="form-control" id="capacity" name="capacity">
+            </div>
+            <div class="form-group">
+                <label for="ticketsAvailable">Tickets Available:</label>
+                <input type="number" class="form-control" id="ticketsAvailable" name="ticketsAvailable">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="isActive" name="isActive" checked>
+                <label class="form-check-label" for="isActive">Is Active</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Event</button>
+            <a href="/" class="btn btn-secondary ml-2">Back</a>
+        </form>
+    </div>
+
+</body>
+</html>

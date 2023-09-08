@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container m-3">
+    <a type="button" class="btn btn-primary" href="/">Back</a>
+</div>
+<div class="container py-5">
+    <h3 class="mb-4">Client List</h3>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Creation Date</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Actions</th> <!-- Add this column -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (let i = 0; i < records.length; i++) { %>
+                    <tr>
+                        <td><%= records[i].id %></td>
+                        <td><%= records[i].name %></td>
+                        <td><%= records[i].creationDate %></td>
+                        <td><%= records[i].description %></td>
+                        <td>
+                            <img src="/static/<%=records[i].image%>" alt="Image">
+                        </td>
+                        <td>
+                            <a href="/ls/category/<%=records[i].id %>" class="btn btn-info">View</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

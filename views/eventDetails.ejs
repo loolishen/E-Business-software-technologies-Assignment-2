@@ -1,0 +1,50 @@
+<html>
+<head>
+    <title>Event Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Event Details</h1>
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <td><%= event.id %></td>
+            </tr>
+            <tr>
+                <th>Event Name</th>
+                <td><%= event.eventName %></td>
+            </tr>
+            <tr>
+                <th>Start Date Time</th>
+                <td><%= event.startDateTime %></td>
+            </tr>
+            <tr>
+                <th>Duration (minutes)</th>
+                <td><%= event.duration %></td>
+            </tr>
+            <tr>
+                <th>Event Description</th>
+                <td><%= event.eventDescription %></td>
+            </tr>
+            <tr>
+                <th>Capacity</th>
+                <td><%= event.capacity %></td>
+            </tr>
+            <tr>
+                <th>Tickets Available</th>
+                <td><%= event.ticketsAvailable %></td>
+            </tr>
+            <tr>
+                <th>Ongoing</th>
+                <td><%= event.isActive %></td>
+            </tr>
+            <tr>
+                <th>Category ID</th>
+                <td><%= event.categoryId %></td>
+            </tr>
+        </table>
+        <a href="/ls/eventOngoing" class="btn btn-secondary">Back</a>
+    </div>
+</body>
+</html>

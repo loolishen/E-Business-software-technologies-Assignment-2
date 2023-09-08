@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <title>Welcome to FIT_2095 - Assignment 1</title>
+</head>
+<body>
+<div class="container m-3">
+    <div class="mt-4 p-5 bg-primary text-white rounded">
+        <h1>Welcome to FIT_2095</h1>
+        <p>Assignment 1</p>
+    </div>
+</div>
+<div class="container m-3">
+    <a type="button" class="btn btn-primary" href="/info">How it works</a>
+</div>
+<div class="container m-3">
+    <a type="button" class="btn btn-primary" href="/">Back</a>
+</div>
+<div class="container m-3">
+    <h1> Please enter the event: </h1>
+    <form action="/input" method="POST">
+        <div class="mb-3">
+            <label for="eventName" class="form-label">Event Name</label>
+            <input type="text" class="form-control" id="eventName" name="eventName">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="text" class="form-control" placeholder="Enter static resource path" id="image" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</body>
+</html>
