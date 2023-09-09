@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-
+const alphanumericPattern = /^[a-zA-Z0-9\s]*$/;
 const eventsCatSchema = new mongoose.Schema({
     id: {
       type: String,
@@ -11,8 +10,7 @@ const eventsCatSchema = new mongoose.Schema({
       required: true,
       validate: {
         validator: function (value) {
-          // Your alphanumeric validation logic here
-          // ...
+            return alphanumericPattern.test(value);
         },
         message: 'Name must contain only alphanumeric characters.',
       },
