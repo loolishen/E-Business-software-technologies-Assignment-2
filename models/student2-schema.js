@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
-const student2Schema = mongoose.Schema({
+const eventSchema = mongoose.Schema({
     id: {
         type: String,
-        required: true,
+        required: false,
     },
 
     name: {
@@ -13,7 +13,7 @@ const student2Schema = mongoose.Schema({
 
     description: {
         type: String,
-        required: true,
+        required: false,
     },
 
     startDateTime: {
@@ -24,7 +24,6 @@ const student2Schema = mongoose.Schema({
     durationInMinutes: {
         type: Number, 
         required: true,
-        
     },
 
     isActive: {
@@ -40,6 +39,12 @@ const student2Schema = mongoose.Schema({
     capacity: {
         type: Number,
         default: 1000,
+        validate: {
+            validator: function(value) {
+                return value >= 10 && value <= 2000;
+            },
+            message: "Capacity must be between 10 and 2000 (inclusive)."
+        }
     },
 
     ticketsAvailable: {
@@ -53,9 +58,14 @@ const student2Schema = mongoose.Schema({
         type: String, 
         required: true,
     },
+
+    categoryList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category' // Assuming 'Category' is the name of your category model
+    }]
 });
 
 // Create a Mongoose model based on the schema
-const Student2 = mongoose.model("Student2", student2Schema);
+const Event = mongoose.model("Event", eventSchema);
 
-module.exports = Student2;
+module.exports = Event;
