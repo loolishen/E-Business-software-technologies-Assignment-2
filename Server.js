@@ -15,6 +15,7 @@ Server.engine("html", ejs.renderFile);
 Server.set("view engine", "html");
 Server.set('view engine', 'ejs');
 Server.set('views', path.join(__dirname, 'views'));
+Server.use(bodyParser.json())
 
 Server.listen(PORT_NUMBER, function (){
     console.log(`Successfully initiated on port ${PORT_NUMBER}`)
