@@ -55,8 +55,10 @@ module.exports = {
             } = req.body;
 
             // Validate the request data
+            const eventId = IDGenerator();
 
             const newEvent = new Student2Schema({
+                id: eventId,
                 name,
                 description,
                 startDateTime,
