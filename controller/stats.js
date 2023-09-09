@@ -41,7 +41,6 @@ function DateGenerator(){
     }
     return randomNumberGenerator(1,30) + " - " + randomNumberGenerator(1,12) + " - " + randomNumberGenerator(2017, 2023)
 }
-const Event = require("../models/student2-schema"); 
 
 module.exports = {
     addEvent: async function (req, res) {
@@ -57,7 +56,7 @@ module.exports = {
 
             // Validate the request data
 
-            const newEvent = new Event({
+            const newEvent = new Student2Schema({
                 name,
                 description,
                 startDateTime,
@@ -72,7 +71,6 @@ module.exports = {
             await newEvent.save();
 
             // Update the corresponding categories' event lists
-            // Assuming you have a Category model and categoryController to handle this
 
             // Return the event ID in the response
             res.status(200).json({
@@ -87,7 +85,7 @@ module.exports = {
     listEvents: async function (req, res) {
         try {
             // Fetch all events and populate the 'categoryList' field
-            const events = await Event.find().populate('categoryList').exec();
+            const events = await Student2Schema.find().populate('categoryList').exec();
             res.status(200).json(events);
         } catch (error) {
             console.error(error);
@@ -98,7 +96,7 @@ module.exports = {
     deleteEventById: async function (req, res) {
         try {
             const eventId = req.body.eventId; // Get event ID from request body
-            const deletedEvent = await Event.findByIdAndRemove(eventId);
+            const deletedEvent = await Student2Schema.findByIdAndRemove(eventId);
 
             if (!deletedEvent) {
                 res.status(404).json({ error: 'Event not found' });
@@ -126,7 +124,7 @@ module.exports = {
                 capacity
             } = req.body;
 
-            const updatedEvent = await Event.findByIdAndUpdate(eventId, {
+            const updatedEvent = await Student2Schema.findByIdAndUpdate(eventId, {
                 name,
                 capacity
             }, {
