@@ -19,25 +19,11 @@ module.exports = {
 
     deleteEventCatById: async function (req, res) {
         try {
-            const eventCatID = req.body.id;
-
-            // Find the event category by its ID
-            const eventCat = await StudentSchema.findOne({ id: eventCatID });
-
-            if (!eventCat) {
-                return res.status(404).json({ error: 'Event Category not found' });
-            }
-
-            // Log the _id of the event category
-            console.log('Event Category ID:', eventCat._id);
-
-            // Delete the event category
-            await StudentSchema.findByIdAndRemove(eventCat._id);
-
+            const eventCatID = req.body.categoryId;
+            await StudentSchema.deleteOne({id : eventCatID})
             res.status(200).json({
                 acknowledged: true,
-                deletedCount: 1,
-            });
+                deletedCount: 0});
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -46,8 +32,8 @@ module.exports = {
 
     updateEventCatById: async function (req, res) {
         try {
-            const eventCatID = req.params.id;
-            const updatedCategory = await StudentSchema.findByIdAndUpdate(
+            const eventCatID = req.body.categoryId;
+            const updatedCategory = await StudentSchema.updateOne(
                 eventCatID,
                 {
                     name: req.body.name,
