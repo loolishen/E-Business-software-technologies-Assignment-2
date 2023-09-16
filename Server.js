@@ -1,14 +1,13 @@
 const express = require("express");
 const path = require("path");
-const mongoose = require('mongoose');
 const VIEWS_PATH = path.join(__dirname, "/views/"); //Important
 const EventsCat = require("./models/students");
-const Events = require("./models/students2");
+const Events = require("./models/students2")
 const ejs = require("ejs");
 const PORT_NUMBER = 8080;
-const EventsCatRouter = require("./routes/eventCategory-api");
 let database = []
 let event = []
+
 let Server = express();
 Server.use(express.urlencoded({ extended: true }));
 Server.use(express.static("node_modules/bootstrap/dist/css"));
@@ -16,15 +15,11 @@ Server.engine("html", ejs.renderFile);
 Server.set("view engine", "html");
 Server.set('view engine', 'ejs');
 Server.set('views', path.join(__dirname, 'views'));
-const url = "mongodb://127.0.0.1:27017";
+Server.use(bodyParser.json())
+
 Server.listen(PORT_NUMBER, function (){
     console.log(`Successfully initiated on port ${PORT_NUMBER}`)
 });
-async function connect(url) {
-    await mongoose.connect(url);
-    return "Connected Successfully";
-}
-
 Server.post('/input',function (req,res){
     let anEvent = new EventsCat(req.body.eventName, req.body.description, req.body.image)
     console.log(anEvent)
@@ -104,7 +99,8 @@ Server.post('/delete-category', (req, res) => {
         res.status(404).json({ error: 'Category not found' });
     }
 });
-Server.use('/operations',EventsCatRouter)
+Server.use('/static', express.static(__dirname + '/static'));
+
 // LiShen's CODE
 
 // Display the form for adding an event
@@ -187,6 +183,3 @@ Server.get('*', function(req, res) {
     const fileName = VIEWS_PATH + "index.html";
     res.render(fileName);
 });
-connect(url)
-    .then(console.log)
-    .catch((err) => console.log(err));

@@ -3,15 +3,15 @@ const router = express.Router();
 const eventController = require("../controller/stats");
 
 // Create a new event
-router.post("/ls/api/v1/add-event", eventController.addEvent);
+router.post("/add-event", eventController.addEvent);
 
 // List all events
-router.get("/ls/api/v1/events", eventController.listEvents);
+router.get("/events", eventController.listEvents);
 
 // Delete an event by ID
-router.post("/ls/api/v1/delete-event", eventController.deleteEventById);
+router.delete('/delete-event/:eventId', eventController.deleteEventById);
 
 // Update an event by ID
-router.post("/ls/api/v1/update-event", eventController.updateEventById);
+router.put("/update-event/:eventId", eventController.updateEventById);
 
 module.exports = router;
