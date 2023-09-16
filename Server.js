@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const bodyParser = require("body-parser")
 const VIEWS_PATH = path.join(__dirname, "/views/"); //Important
 const EventsCat = require("./models/students");
 const Events = require("./models/students2")
@@ -104,34 +105,34 @@ Server.use('/static', express.static(__dirname + '/static'));
 // LiShen's CODE
 
 // Display the form for adding an event
-Server.get('/ls/event/add', function (req, res) {
+Server.get('/lishen/event/add', function (req, res) {
     const fileName = VIEWS_PATH + "add.html"
     res.sendFile(fileName)
 });
 
 // Handle POST request for adding an event
-Server.post('/ls/event/add', function(req, res) {
+Server.post('/lishen/event/add', function(req, res) {
     const { eventName, startDateTime, duration, categoryId, eventDescription, eventImage, capacity, ticketsAvailable, isActive } = req.body;
     const id = Events.IDGenerator(); // Call the IDGenerator function to get a new ID
     const newEvent = { id, eventName, startDateTime, duration, categoryId, eventDescription, eventImage, capacity, ticketsAvailable, isActive };
     event.push(newEvent);
-    res.redirect('/ls/eventOngoing'); // Redirect to the eventOngoing page after adding the event
+    res.redirect('/lishen/eventOngoing'); // Redirect to the eventOngoing page after adding the event
 })
 
 // Display all ongoing events
-Server.get('/ls/eventOngoing', function(req, res){
+Server.get('/lishen/eventOngoing', function(req, res){
     const fileName = "allEvents";
     res.render(fileName, { events: event }); // Pass the event array to the template
 })   
 
-Server.get('/ls/event/sold-out', function(req,res){
+Server.get('/lishen/event/sold-out', function(req,res){
     const fileName = "soldOutEvents";
     const availableEvents = event.filter(event => event.ticketsAvailable < 1); // Filter events with capacity < 1
     res.render(fileName, { events: availableEvents });
 })
 
 // Handle routes for event details and category details
-Server.get('/ls/event/details/:eventId', function(req, res) {
+Server.get('/lishen/event/details/:eventId', function(req, res) {
     const eventId = req.params.eventId; // Get event ID from URL parameter
     const selectedEvent = event.find(e => e.id === eventId);
 
@@ -145,7 +146,7 @@ Server.get('/ls/event/details/:eventId', function(req, res) {
 });
 
 
-Server.get('/ls/category/:categoryId', function(req, res){
+Server.get('/lishen/category/:categoryId', function(req, res){
     const categoryId = req.params.categoryId;
     const selectedCategory = database.find(cat => cat.id === categoryId); // Find the selected category
 
@@ -167,7 +168,7 @@ Server.get('/ls/category/:categoryId', function(req, res){
 });
 
 // Remove an event from the event array
-Server.get('/ls/event/remove', (req, res) => {
+Server.get('/lishen/event/remove', (req, res) => {
     const eventId = req.query.id; // Get event ID from query string
     const eventIndex = event.findIndex(e => e.id === eventId); // Find the index of the event
     if (eventIndex !== -1) {

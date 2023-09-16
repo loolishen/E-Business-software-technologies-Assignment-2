@@ -54,10 +54,11 @@ const eventSchema = mongoose.Schema({
         },
     },
 
-    categoryId: {
-        type: String, 
+    categoryId: [{
+        type: String,
         required: true,
-    },
+    }],
+    
 
     categoryList: [{
         type: mongoose.Schema.Types.ObjectId,
