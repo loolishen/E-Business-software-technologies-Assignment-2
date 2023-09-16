@@ -1,50 +1,16 @@
 const StudentSchema = require("../models/student-schema");
-const Student2Schema = require("../models/student2-schema");
 
 module.exports = {
-    createEventCat: async function (req, res) {
-        try {
-            const categoryId = IDGenerator();
-            const newCategory = new StudentSchema({
-                id: categoryId,
-                name: req.body.name,
-                description: req.body.description,
-                image: req.body.image,
-                creationDate: DateGenerator(),
-            });
-
-            await newCategory.save();
-            res.status(201).json(newCategory);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
+    createEventCat: async (req, res) => {
+        let anEventCat = new StudentSchema({id : IDGenerator(), name:req.body.name,description : req.body.description, image : req.body.image, creationDate : DateGenerator()})
+        await anEventCat.save();
+        res.json(anEventCat)
     },
 
     getAll: async function (req, res) {
         try {
-            const categories = await EventsCat.find().populate('eventsList');
+            const categories = await StudentSchema.find().populate('eventsList');
             res.json(categories);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    },
-
-    addEvent: async function (req, res) {
-        try {
-            const { eventID, eventCatID } = req.body;
-            const theEvent = await Event.findOne({ _id: eventID });
-            const theEventCat = await EventsCat.findOne({ _id: eventCatID });
-
-            if (!theEvent || !theEventCat) {
-                res.status(404).json({ error: 'Event or Event Category not found' });
-                return;
-            }
-
-            theEventCat.eventsList.push(theEvent._id);
-            await theEventCat.save();
-            res.status(200).json(theEventCat);
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -53,28 +19,35 @@ module.exports = {
 
     deleteEventCatById: async function (req, res) {
         try {
-            const eventCatID = req.body.eventCatID;
-            const deletedEventCat = await EventsCat.findByIdAndRemove(eventCatID);
+            const eventCatID = req.body.id;
 
-            if (!deletedEventCat) {
-                res.status(404).json({ error: 'Event Category not found' });
-                return;
+            // Find the event category by its ID
+            const eventCat = await StudentSchema.findOne({ id: eventCatID });
+
+            if (!eventCat) {
+                return res.status(404).json({ error: 'Event Category not found' });
             }
+
+            // Log the _id of the event category
+            console.log('Event Category ID:', eventCat._id);
+
+            // Delete the event category
+            await StudentSchema.findByIdAndRemove(eventCat._id);
 
             res.status(200).json({
                 acknowledged: true,
                 deletedCount: 1,
             });
-        } catch (err) {
-            console.error(err);
+        } catch (error) {
+            console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 
     updateEventCatById: async function (req, res) {
         try {
-            const eventCatID = req.params.eventCatID;
-            const updatedCategory = await EventsCat.findByIdAndUpdate(
+            const eventCatID = req.params.id;
+            const updatedCategory = await StudentSchema.findByIdAndUpdate(
                 eventCatID,
                 {
                     name: req.body.name,
@@ -118,107 +91,3 @@ function DateGenerator(){
     }
     return randomNumberGenerator(1,30) + " - " + randomNumberGenerator(1,12) + " - " + randomNumberGenerator(2017, 2023)
 }
-
-module.exports = {
-    addEvent: async function (req, res) {
-        try {
-            const {
-                name,
-                description,
-                startDateTime,
-                durationInMinutes,
-                capacity,
-                categories
-            } = req.body;
-
-            // Validate the request data
-            const eventId = IDGenerator();
-
-            const newEvent = new Student2Schema({
-                id: eventId,
-                name,
-                description,
-                startDateTime,
-                durationInMinutes,
-                capacity,
-                ticketsAvailable: capacity,
-                categoryId: categories.split(","),
-                categoryList: [], // Initialize as an empty array
-            });
-
-            // Save the new event to the database
-            await newEvent.save();
-
-            // Update the corresponding categories' event lists
-
-            // Return the event ID in the response
-            res.status(200).json({
-                eventId: newEvent.id
-            });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-    },
-
-    listEvents: async function (req, res) {
-        try {
-            // Fetch all events and populate the 'categoryList' field
-            const events = await Student2Schema.find().populate('categoryList').exec();
-            res.status(200).json(events);
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-    },
-
-    deleteEventById: async function (req, res) {
-        try {
-            const eventId = req.body.eventId; // Get event ID from request body
-            const deletedEvent = await Student2Schema.findByIdAndRemove(eventId);
-
-            if (!deletedEvent) {
-                res.status(404).json({ error: 'Event not found' });
-                return;
-            }
-
-            // Handle updating category event lists if needed
-            // Assuming you have a Category model and categoryController to handle this
-
-            res.status(200).json({
-                acknowledged: true,
-                deletedCount: 1
-            });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-    },
-
-    updateEventById: async function (req, res) {
-        try {
-            const {
-                eventId,
-                name,
-                capacity
-            } = req.body;
-
-            const updatedEvent = await Student2Schema.findByIdAndUpdate(eventId, {
-                name,
-                capacity
-            }, {
-                new: true
-            });
-
-            if (!updatedEvent) {
-                res.status(404).json({ status: 'Event not found' });
-                return;
-            }
-
-            res.status(200).json({ status: 'updated successfully' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-    },
-};

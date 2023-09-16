@@ -3,7 +3,7 @@ const alphanumericPattern = /^[a-zA-Z0-9\s]*$/;
 const eventsCatSchema = new mongoose.Schema({
     id: {
       type: String,
-      required: true,
+      required: false,
     },
     name: {
       type: String,
@@ -19,19 +19,22 @@ const eventsCatSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    image: String,
+    image: {
+        type : String,
+        required : false,
+    },
     creationDate: {
       type: String,
-      required: true,
+      required: false,
     },
     eventsList: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Student2',
-      },
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Event', // Reference to the Event model
+        },
     ],
   });
 
-const EventsCat = mongoose.model('EventsCat', eventsCatSchema);
+const EventCat = mongoose.model('EventsCat',eventsCatSchema);
 
-module.exports = EventsCat;
+module.exports = EventCat;
