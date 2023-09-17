@@ -26,6 +26,15 @@ Server.set('views', path.join(__dirname, 'views'));
 Server.listen(PORT_NUMBER, function (){
     console.log(`Successfully initiated on port ${PORT_NUMBER}`)
 });
+/**
+ * Handle POST request for creating a new event category.
+ *
+ * @function
+ * @async
+ * @param {object} req - The HTTP request object.
+ * @param {object} res - The HTTP response object.
+ * @returns {void}
+ */
 Server.post('/input', async function (req, res) {
     let anEventCat = new EventsCat({
         id: IDGenerator(),
@@ -38,6 +47,15 @@ Server.post('/input', async function (req, res) {
     // Redirect to '/output'
     res.redirect('/output');
 });
+/**
+ * Handle GET request to display a list of events.
+ *
+ * @function
+ * @async
+ * @param {object} req - The HTTP request object.
+ * @param {object} res - The HTTP response object.
+ * @returns {void}
+ */
 Server.get('/output', async (req, res) => {
     try {
         fileName = VIEWS_PATH + "output.html";
@@ -124,6 +142,12 @@ Server.post('/delete-category', async (req, res) => {
 });
 Server.use('/static', express.static(__dirname + '/static'));
 Server.use('/33349800/api/v1',eventCatRoutes);
+/**
+ * Generate a random ID.
+ *
+ * @function
+ * @returns {string} The generated ID.
+ */
 function IDGenerator() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = 'C';
@@ -138,6 +162,12 @@ function IDGenerator() {
     }
     return result;
 }
+/**
+ * Generate a random date.
+ *
+ * @function
+ * @returns {string} The generated date.
+ */
 function DateGenerator(){
     function randomNumberGenerator(min, max){
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -162,25 +192,24 @@ Server.post('/ls/event/add', function(req, res) {
 })
 
 // Display all ongoing events
-Server.get('/ls/eventOngoing', function(req, res){
+Server.get('/ls/eventOngoing', async function (req, res) {
     try {
         fileName = VIEWS_PATH + "allEvents";
         const events = await Events.find().populate('categoryList');
-        res.render(fileName, {events: events});
+        res.render(fileName, { events: events });
     } catch (err) {
         console.error(err);
-        res.status(500).json({error: 'Internal Server Error'});
-
-    })
-
-Server.get('/ls/event/sold-out', function(req,res){
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+Server.get('/ls/event/sold-out', function (req, res) {
     const fileName = "soldOutEvents";
     const availableEvents = event.filter(event => event.ticketsAvailable < 1); // Filter events with capacity < 1
-    res.render(fileName, { events: availableEvents });
+    res.render(fileName, {events: availableEvents});
 })
 
 // Handle routes for event details and category details
-Server.get('/ls/event/details/:eventId', function(req, res) {
+Server.get('/ls/event/details/:eventId', function (req, res) {
     const eventId = req.params.eventId; // Get event ID from URL parameter
     const selectedEvent = event.find(e => e.id === eventId);
 
@@ -189,12 +218,12 @@ Server.get('/ls/event/details/:eventId', function(req, res) {
         return;
     }
 
-    const fileName = "eventDetails"; 
-    res.render(fileName, { event: selectedEvent });
+    const fileName = "eventDetails";
+    res.render(fileName, {event: selectedEvent});
 });
 
 
-Server.get('/ls/category/:categoryId', function(req, res){
+Server.get('/ls/category/:categoryId', function (req, res) {
     const categoryId = req.params.categoryId;
     const selectedCategory = database.find(cat => cat.id === categoryId); // Find the selected category
 
@@ -226,12 +255,11 @@ Server.get('/ls/event/remove', (req, res) => {
         res.status(404).send('Event not found'); // Handle event not found
     }
 });
-
 // Add a catch-all route to handle requests with no pathname
-Server.get('*', function(req, res) {
+Server.get('*', function (req, res) {
     const fileName = VIEWS_PATH + "index.html";
     res.render(fileName);
 });
 connect(url)
-    .then(console.log)
-    .catch((err) => console.log(err));
+.then(console.log)
+.catch((err) => console.log(err));
