@@ -2,7 +2,12 @@ const StudentSchema = require("../models/EventCategorySchema");
 const Operation = require('../models/operations');  // Import the Operation schema
 
 const operationController = {
-    // Function to increment the update count
+    /**
+     * Function to increment the update count.
+     * @async
+     * @function
+     * @returns {Promise<void>}
+     */
     incrementUpdateCount: async () => {
         try {
             const operation = await Operation.findOne({});
@@ -17,7 +22,12 @@ const operationController = {
         }
     },
 
-    // Function to increment the delete count
+    /**
+     * Function to increment the delete count.
+     * @async
+     * @function
+     * @returns {Promise<void>}
+     */
     incrementDeleteCount: async () => {
         try {
             const operation = await Operation.findOne({});
@@ -32,7 +42,14 @@ const operationController = {
         }
     },
 
-    // Function to get the operation counts
+    /**
+     * Function to get the operation counts.
+     * @async
+     * @function
+     * @param {object} req - The HTTP request object.
+     * @param {object} res - The HTTP response object.
+     * @returns {Promise<void>}
+     */
     getOperationCounts: async (req, res) => {
         try {
             const operation = await Operation.findOne({});
@@ -55,7 +72,14 @@ module.exports = {
         res.status(200).json({
             id : anEventCat.id});
     },
-
+    /**
+     * Get all event categories.
+     * @async
+     * @function
+     * @param {object} req - The HTTP request object.
+     * @param {object} res - The HTTP response object.
+     * @returns {Promise<void>}
+     */
     getAll: async function (req, res) {
         try {
             const categories = await StudentSchema.find().populate('eventsList');
@@ -65,7 +89,14 @@ module.exports = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
-
+    /**
+     * Delete an event category by ID.
+     * @async
+     * @function
+     * @param {object} req - The HTTP request object.
+     * @param {object} res - The HTTP response object.
+     * @returns {Promise<void>}
+     */
     deleteEventCatById: async function (req, res) {
         try {
             const eventCatID = req.body.categoryId;
@@ -77,7 +108,14 @@ module.exports = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
-
+    /**
+     * Update an event category by ID.
+     * @async
+     * @function
+     * @param {object} req - The HTTP request object.
+     * @param {object} res - The HTTP response object.
+     * @returns {Promise<void>}
+     */
     updateEventCatById: async function (req, res) {
         try {
             const eventCatID = req.body.categoryId;
