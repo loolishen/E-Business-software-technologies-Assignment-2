@@ -9,9 +9,9 @@ router.post("/add-event", eventController.addEvent);
 router.get("/events", eventController.listEvents);
 
 // Delete an event by ID
-router.delete('/delete-event/:eventId', eventController.deleteEventById);
+router.delete('/delete-event', eventController.deleteEventById);
 
 // Update an event by ID
-router.put("/update-event/:eventId", eventController.updateEventById);
+router.put("/update-event", eventController.updateEventById);
 
 module.exports = router;
