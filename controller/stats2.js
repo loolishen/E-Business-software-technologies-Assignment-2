@@ -1,7 +1,10 @@
 const Student2Schema = require("../models/student2-schema");
-const StudentSchema = require("../models/student-schema");
-const EventCat = require("../models/student-schema");
+const EventCat = require("../models/EventCategorySchema");
 
+// Initialize counters for Add, Update, and Delete operations
+let addCount = 0;
+let updateCount = 0;
+let deleteCount = 0;
 
 module.exports = {
     addEvent: async function (req, res) {
@@ -32,6 +35,7 @@ module.exports = {
   
         // Save the new event to the database
         await newEvent.save();
+        addCount++;
   
         // Return the event ID in the response
         res.status(200).json({
@@ -75,6 +79,8 @@ module.exports = {
                 return;
             }
 
+            deleteCount++;
+
             res.status(200).json({
                 acknowledged: true,
                 deletedCount: 1,
@@ -109,6 +115,7 @@ module.exports = {
                 return;
             }
     
+            updateCount++;
             res.status(200).json({ status: 'updated successfully' });
         } catch (error) {
             console.error(error);
@@ -116,7 +123,14 @@ module.exports = {
         }
     },
     
-    
+    // Getter function to retrieve counts
+    getOperationCounts: function (req, res) {
+        res.status(200).json({
+            addCount,
+            updateCount,
+            deleteCount,
+        });
+    },
     
 
 }
