@@ -1,10 +1,59 @@
 const StudentSchema = require("../models/student-schema");
+const Operation = require('../models/operations');  // Import the Operation schema
+
+const operationController = {
+    // Function to increment the update count
+    incrementUpdateCount: async () => {
+        try {
+            const operation = await Operation.findOne({});
+            if (operation) {
+                operation.updateCount += 1;
+                await operation.save();
+            } else {
+                await Operation.create({ updateCount: 1 });
+            }
+        } catch (error) {
+            console.error('Error incrementing update count:', error);
+        }
+    },
+
+    // Function to increment the delete count
+    incrementDeleteCount: async () => {
+        try {
+            const operation = await Operation.findOne({});
+            if (operation) {
+                operation.deleteCount += 1;
+                await operation.save();
+            } else {
+                await Operation.create({ deleteCount: 1 });
+            }
+        } catch (error) {
+            console.error('Error incrementing delete count:', error);
+        }
+    },
+
+    // Function to get the operation counts
+    getOperationCounts: async (req, res) => {
+        try {
+            const operation = await Operation.findOne({});
+            res.status(200).json({
+                updateCount: operation ? operation.updateCount : 0,
+                deleteCount: operation ? operation.deleteCount : 0,
+            });
+        } catch (error) {
+            console.error('Error getting operation counts:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    },
+};
+
 
 module.exports = {
     createEventCat: async (req, res) => {
         let anEventCat = new StudentSchema({id : IDGenerator(), name:req.body.name,description : req.body.description, image : req.body.image, creationDate : DateGenerator()})
         await anEventCat.save();
-        res.json(anEventCat)
+        res.status(200).json({
+            id : anEventCat.id});
     },
 
     getAll: async function (req, res) {
@@ -20,10 +69,9 @@ module.exports = {
     deleteEventCatById: async function (req, res) {
         try {
             const eventCatID = req.body.categoryId;
-            await StudentSchema.deleteOne({id : eventCatID})
-            res.status(200).json({
-                acknowledged: true,
-                deletedCount: 0});
+            const deleteEvent = await StudentSchema.deleteOne({id : eventCatID})
+            await operationController.incrementDeleteCount();
+            res.json(deleteEvent)
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -33,8 +81,8 @@ module.exports = {
     updateEventCatById: async function (req, res) {
         try {
             const eventCatID = req.body.categoryId;
-            const updatedCategory = await StudentSchema.updateOne(
-                eventCatID,
+            const updatedCategory = await StudentSchema.findOneAndUpdate(
+                { id: eventCatID },
                 {
                     name: req.body.name,
                     description: req.body.description,
@@ -43,9 +91,10 @@ module.exports = {
                 },
                 { new: true }
             );
-
+            // Increment the update count
+            await operationController.incrementUpdateCount();
             if (!updatedCategory) {
-                res.status(404).json({ error: 'Event Category not found' });
+                res.status(404).json({ error: 'Event Category ID not found' });
                 return;
             }
 

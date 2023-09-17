@@ -7,7 +7,6 @@ const ejs = require("ejs");
 const PORT_NUMBER = 8080;
 let database = []
 let event = []
-
 let Server = express();
 Server.use(express.urlencoded({ extended: true }));
 Server.use(express.static("node_modules/bootstrap/dist/css"));

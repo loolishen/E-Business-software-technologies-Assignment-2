@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const eventCatCont = require("../controller/stats");
+const eventCatCont = require("../controller/event-api-controller");
 
 router.post("/createEventCategory", eventCatCont.createEventCat);
 router.get("/list-eventCat", eventCatCont.getAll);
