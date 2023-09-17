@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
+const StudentSchema = require("../models/student-schema");
+const EventCat = require("../models/student-schema");
 
 const eventSchema = mongoose.Schema({
     id: {
         type: String,
+        unique: true,
         required: false,
     },
 
@@ -54,15 +57,9 @@ const eventSchema = mongoose.Schema({
         },
     },
 
-    categoryId: [{
-        type: String,
-        required: true,
-    }],
-    
-
     categoryList: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category' // Assuming 'Category' is the name of your category model
+        ref: EventCat
     }]
 });
 
