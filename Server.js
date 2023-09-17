@@ -163,9 +163,15 @@ Server.post('/ls/event/add', function(req, res) {
 
 // Display all ongoing events
 Server.get('/ls/eventOngoing', function(req, res){
-    const fileName = "allEvents";
-    res.render(fileName, { events: event }); // Pass the event array to the template
-})   
+    try {
+        fileName = VIEWS_PATH + "allEvents";
+        const events = await Events.find().populate('categoryList');
+        res.render(fileName, {events: events});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'Internal Server Error'});
+
+    })
 
 Server.get('/ls/event/sold-out', function(req,res){
     const fileName = "soldOutEvents";
