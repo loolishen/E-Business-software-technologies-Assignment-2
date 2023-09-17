@@ -1,4 +1,4 @@
-const StudentSchema = require("../models/student-schema");
+const StudentSchema = require("../models/EventCategorySchema");
 const Operation = require('../models/operations');  // Import the Operation schema
 
 const operationController = {
