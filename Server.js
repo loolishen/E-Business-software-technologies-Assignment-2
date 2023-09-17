@@ -176,23 +176,54 @@ function DateGenerator(){
 }
 // LiShen's CODE
 
+function IDGeneratorE() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'C';
+    for (let i = 0; i < 2; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+    result += '-';
+    for (let j = 0; j < 4; j++) {
+        const randomDigit = Math.floor(Math.random() * 10);
+        result += randomDigit;
+    }
+    return result;
+}
 // Display the form for adding an event
-Server.get('/ls/event/add', function (req, res) {
+Server.get('/lishen/event/add', function (req, res) {
     const fileName = VIEWS_PATH + "add.html"
     res.sendFile(fileName)
 });
 
-// Handle POST request for adding an event
-Server.post('/ls/event/add', function(req, res) {
-    const { eventName, startDateTime, duration, categoryId, eventDescription, eventImage, capacity, ticketsAvailable, isActive } = req.body;
-    const id = Events.IDGenerator(); // Call the IDGenerator function to get a new ID
-    const newEvent = { id, eventName, startDateTime, duration, categoryId, eventDescription, eventImage, capacity, ticketsAvailable, isActive };
-    event.push(newEvent);
-    res.redirect('/ls/eventOngoing'); // Redirect to the eventOngoing page after adding the event
-})
+Server.post('/lishen/event/add', async function(req, res) {
+    const { name, startDateTime, durationInMinutes, categoryId, description, image, capacity, ticketsAvailable, isActive } = req.body;
+
+    // Check if required fields are present
+    if (!name || !startDateTime || !durationInMinutes) {
+        return res.status(400).json({ error: 'Name, startDateTime, and durationInMinutes are required fields.' });
+    }
+
+    // Generate a new ID
+    const id = IDGeneratorE();
+
+    // Create a new event object using the Mongoose model
+    const newEvent = new Events({ id, name, startDateTime, durationInMinutes, categoryId, description, image, capacity, ticketsAvailable, isActive });
+
+    try {
+        // Save the new event to the database
+        await newEvent.save();
+        res.redirect('/lishen/eventOngoing'); // Redirect to the eventOngoing page after adding the event
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 // Display all ongoing events
-Server.get('/ls/eventOngoing', async function (req, res) {
+Server.get('/lishen/eventOngoing', async function (req, res) {
     try {
         fileName = VIEWS_PATH + "allEvents";
         const events = await Events.find().populate('categoryList');
@@ -202,14 +233,15 @@ Server.get('/ls/eventOngoing', async function (req, res) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-Server.get('/ls/event/sold-out', function (req, res) {
+
+Server.get('/lishen/event/sold-out', function (req, res) {
     const fileName = "soldOutEvents";
     const availableEvents = event.filter(event => event.ticketsAvailable < 1); // Filter events with capacity < 1
     res.render(fileName, {events: availableEvents});
 })
 
 // Handle routes for event details and category details
-Server.get('/ls/event/details/:eventId', function (req, res) {
+Server.get('/lishen/event/details/:eventId', function (req, res) {
     const eventId = req.params.eventId; // Get event ID from URL parameter
     const selectedEvent = event.find(e => e.id === eventId);
 
@@ -223,7 +255,7 @@ Server.get('/ls/event/details/:eventId', function (req, res) {
 });
 
 
-Server.get('/ls/category/:categoryId', function (req, res) {
+Server.get('/lishen/category/:categoryId', function (req, res) {
     const categoryId = req.params.categoryId;
     const selectedCategory = database.find(cat => cat.id === categoryId); // Find the selected category
 
@@ -245,12 +277,12 @@ Server.get('/ls/category/:categoryId', function (req, res) {
 });
 
 // Remove an event from the event array
-Server.get('/ls/event/remove', (req, res) => {
+Server.get('/lishen/event/remove', (req, res) => {
     const eventId = req.query.id; // Get event ID from query string
     const eventIndex = event.findIndex(e => e.id === eventId); // Find the index of the event
     if (eventIndex !== -1) {
         event.splice(eventIndex, 1); // Remove the event from the array
-        res.redirect('/ls/eventOngoing'); // Redirect to the "list all events" page
+        res.redirect('/lishen/eventOngoing'); // Redirect to the "list all events" page
     } else {
         res.status(404).send('Event not found'); // Handle event not found
     }
