@@ -26,6 +26,15 @@ Server.set('views', path.join(__dirname, 'views'));
 Server.listen(PORT_NUMBER, function (){
     console.log(`Successfully initiated on port ${PORT_NUMBER}`)
 });
+
+
+let eventsCount = 0;
+let categoriesCount = 0;
+let recordsCreatedCount = 0;
+let recordsDeletedCount = 0;
+let recordsUpdatedCount = 0;
+
+
 /**
  * Handle POST request for creating a new event category.
  *
@@ -44,6 +53,10 @@ Server.post('/input', async function (req, res) {
         creationDate: DateGenerator()
     });
     await anEventCat.save();
+
+    recordsCreatedCount++;
+    categoriesCount++;
+
     // Redirect to '/output'
     res.redirect('/output');
 });
@@ -72,7 +85,13 @@ Server.get('/info',function (req,res){
 });
 Server.get('/',function (req,res){
     const fileName = VIEWS_PATH + "index.html";
-    res.render(fileName);
+    res.render(fileName, {
+        eventsCount,
+        categoriesCount,
+        recordsCreatedCount,
+        recordsDeletedCount,
+        recordsUpdatedCount
+    });
 });
 Server.get('/input',function (req,res){
     fileName = VIEWS_PATH + "input.html";
@@ -130,6 +149,8 @@ Server.post('/delete-category', async (req, res) => {
         // Use Mongoose to delete the category by ID
         const deletedEvent = await EventsCat.findOneAndDelete({ id: categoryId });
         if (deletedEvent) {
+            recordsDeletedCount++;
+            categoriesCount--;
             // Category was found and deleted
             res.redirect('/output');
         } else {
@@ -198,12 +219,6 @@ Server.get('/lishen/event/add', function (req, res) {
 
 Server.post('/lishen/event/add', async function(req, res) {
     const { name, startDateTime, durationInMinutes, categoryId, description, image, capacity, ticketsAvailable, isActive } = req.body;
-
-    // Check if required fields are present
-    if (!name || !startDateTime || !durationInMinutes) {
-        return res.status(400).json({ error: 'Name, startDateTime, and durationInMinutes are required fields.' });
-    }
-
     // Generate a new ID
     const id = IDGeneratorE();
 
@@ -213,6 +228,10 @@ Server.post('/lishen/event/add', async function(req, res) {
     try {
         // Save the new event to the database
         await newEvent.save();
+
+        recordsCreatedCount++;
+        eventsCount++;
+
         res.redirect('/lishen/eventOngoing'); // Redirect to the eventOngoing page after adding the event
     } catch (error) {
         console.error(error);
@@ -281,6 +300,8 @@ Server.get('/lishen/event/remove', (req, res) => {
     const eventId = req.query.id; // Get event ID from query string
     const eventIndex = event.findIndex(e => e.id === eventId); // Find the index of the event
     if (eventIndex !== -1) {
+        recordsDeletedCount++;
+        eventsCount--;
         event.splice(eventIndex, 1); // Remove the event from the array
         res.redirect('/lishen/eventOngoing'); // Redirect to the "list all events" page
     } else {
