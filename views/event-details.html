@@ -17,10 +17,10 @@
         <div class="card-body">
           <h2 class="card-title"><%= event.eventName %></h2>
           <p class="card-text">Start Date/Time: <%= event.startDateTime.toLocaleString() %></p>
-          <p class="card-text">Calculated End Date/Time: <%= endDateTime.toLocaleString() %></p>
-          <p class="card-text">Duration: <%= event.duration %></p>
-          <p class="card-text">Category: <%= event.categoryId %></p>
-          <p class="card-text">Description: <%= event.eventDescription %></p>
+          <p class="card-text">Calculated End Date/Time: <%= endDateTime %></p>
+          <p class="card-text">Duration: <%= event.durationInMinutes %></p>
+          <p class="card-text">Category: <%= event.categoryList %></p>
+          <p class="card-text">Description: <%= event.description %></p>
         </div>
       </div>
     </div>

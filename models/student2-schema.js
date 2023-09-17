@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const StudentSchema = require("../models/student-schema");
-const EventCat = require("../models/student-schema");
+const EventCat = require("../models/EventCategorySchema");
 
 const eventSchema = mongoose.Schema({
     id: {
