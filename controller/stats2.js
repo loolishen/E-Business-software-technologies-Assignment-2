@@ -1,6 +1,6 @@
 const Student2Schema = require("../models/student2-schema");
-const StudentSchema = require("../models/EventCategorySchema");
-const EventCat = require("../models/EventCategorySchema");
+const StudentSchema = require("../models/student-schema");
+const EventCat = require("../models/student-schema");
 
 
 module.exports = {

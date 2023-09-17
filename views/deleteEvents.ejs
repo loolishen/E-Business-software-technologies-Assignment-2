@@ -36,11 +36,11 @@
                 <strong>Category ID:</strong> <%= event.categoryId %>
             </li>
         </ul>
-        <form action="/ls/event/remove" method="GET">
+        <form action="/lishen/event/remove" method="GET">
             <input type="hidden" name="id" value="<%= event.id %>">
             <button type="submit" class="btn btn-danger mt-3">Delete Event</button>
         </form>
-        <a href="/ls/eventOngoing" class="btn btn-secondary mt-3">Back</a>
+        <a href="/lishen/eventOngoing" class="btn btn-secondary mt-3">Back</a>
     </div>
 </body>
 </html>
