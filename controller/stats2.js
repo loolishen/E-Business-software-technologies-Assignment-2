@@ -1,6 +1,5 @@
 const Student2Schema = require("../models/student2-schema");
-const StudentSchema = require("../models/student-schema");
-const EventCat = require("../models/student-schema");
+const EventCat = require("../models/EventCategorySchema");
 
 
 module.exports = {
@@ -33,7 +32,7 @@ module.exports = {
         const categoryData = await categoryResponse.json();
 
         let newEvent = new Student2Schema(
-            {id: eventId, name:req.body.name ,description : req.body.description,
+            {id: eventId, name:req.body.name ,description : req.body.descriptionE,
                 startDateTime : req.body.startDateTime, durationInMinutes : req.body.durationInMinutes,
                 isActive : req.body.isActive, image : req.body.image, capacity : req.body.capacity,
                 ticketsAvailable : req.body.ticketsAvailable, categoryList : [categoryData._id]})

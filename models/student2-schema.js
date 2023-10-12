@@ -82,7 +82,7 @@ const eventSchema = mongoose.Schema({
     },
     categoryList: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: EventCat
+        ref: EventCat,
     }]
 });
 
